@@ -66,7 +66,7 @@ public class DatabaseManager {
 
                         if (type.equals("Car")) {
                             if (vin.equals(vehicleID)) {
-                                cars.add(new Vehicle(vin, make, model, year, type, vehicle_type, costEstimate));
+                                cars.add(new Vehicle(vin, make, model, year, type, vehicle_type, costEstimate, numberOfDoors, oilChangeCost));
                             }
                         }
                     }
