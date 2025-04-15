@@ -70,7 +70,6 @@ public class DatabaseManager {
                             }
                         }
                     }
-
                 }
                 catch (SQLException e) {
                     System.err.println("Error occurred " + e.getMessage());
