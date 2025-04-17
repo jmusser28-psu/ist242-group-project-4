@@ -33,7 +33,6 @@ public class DatabaseManager {
 
                 vehicles.add(new Vehicle(vin, make, model, year, type, vehicle_type, costEstimate));
             }
-            connection.close();
         }
         catch (SQLException e) {
             System.err.println("Error occurred: " + e.getMessage());
@@ -66,7 +65,7 @@ public class DatabaseManager {
 
                         if (type.equals("Car")) {
                             if (vin.equals(vehicleID)) {
-                                cars.add(new Vehicle(vin, make, model, year, type, vehicle_type, costEstimate, numberOfDoors, oilChangeCost));
+                                cars.add(new Car(vin, make, model, year, type, vehicle_type, costEstimate, numberOfDoors, oilChangeCost));
                             }
                         }
                     }
@@ -76,7 +75,6 @@ public class DatabaseManager {
                 }
 
             }
-            connection.close();
         }
         catch (SQLException e) {
             System.err.println("Error occurred: " + e.getMessage());
@@ -85,6 +83,13 @@ public class DatabaseManager {
         return cars;
     }
 
-
+    public void closeConnection() {
+        try {
+            connection.close();
+        }
+        catch (SQLException e) {
+            System.err.println("Error occurred: " + e.getMessage());
+        }
+    }
 
 }

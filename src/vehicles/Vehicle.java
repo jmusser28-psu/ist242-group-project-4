@@ -19,7 +19,6 @@ public class Vehicle {
         this.vehicle_type = vehicle_type;
         this.costEstimate = costEstimate;
         this.year = year;
-
     }
 
     public String getVin(){
