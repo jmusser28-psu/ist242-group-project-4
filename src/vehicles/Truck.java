@@ -12,5 +12,12 @@ public class Truck extends Vehicle {
         this.cargoInspectionCost = cargoInspectionCost;
     }
 
+    @Override
+    public void displayMaintenanceDetails() {
+        System.out.println("Truck: " + super.getMake() + " " + super.getModel() +
+                " | VIN: " + super.getVin() +
+                " | Maintenance: $" + super.getCostEstimate() +
+                " | Cargo Inspection Cost: " + (cargoInspectionCost));
+    }
 
 }

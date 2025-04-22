@@ -55,4 +55,9 @@ public class InputValidation {
         return value;
     }
 
+    public String line() {
+        String userInput = scnr.nextLine();
+        return userInput;
+    }
+
 }

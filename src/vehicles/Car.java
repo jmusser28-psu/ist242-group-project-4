@@ -10,6 +10,14 @@ public class Car extends Vehicle {
         this.oilChangeCost = oilChangeCost;
     }
 
+    public String getNumDoors() {
+        return numDoors;
+    }
+
+    public String getOilChangeCost() {
+        return oilChangeCost;
+    }
+
     @Override
     public void displayMaintenanceDetails() {
         System.out.println("Car: " + super.getMake() + " " + super.getModel() +
