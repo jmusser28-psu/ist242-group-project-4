@@ -87,7 +87,6 @@ public class DatabaseManager {
 
         final String query = "SELECT * FROM VEHICLES";
         final String motorcycleQuery = "SELECT * FROM motorcycle_details";
-        final boolean hasSideCar = true; // May need to fix later
 
         try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
@@ -107,7 +106,7 @@ public class DatabaseManager {
 
                         if (type.equalsIgnoreCase("Motorcycle")) {
                             if (vin.equals(vehicleID)) {
-                                motorcycles.add(new Motorcycle(vin, make, model, year, type, vehicle_type, costEstimate, hasSideCar, chainCondition, chainReplacementCost));
+                                motorcycles.add(new Motorcycle(vin, make, model, year, type, vehicle_type, costEstimate, chainCondition, chainReplacementCost));
                             }
                         }
                     }
@@ -164,6 +163,74 @@ public class DatabaseManager {
 
         return trucks;
     }
+
+    public void addVehicle(String vin, String make, String model, String year, String type, String vehicle_type, String costEstimate) {
+        try (PreparedStatement ps = connection.prepareStatement("INSERT INTO vehicles (vin, make, model, " +
+                "year, type, vehicle_type, costEstimate) VALUES ? ? ? ? ? ? ?")) {
+            ps.setString(1, vin);
+            ps.setString(2, make);
+            ps.setString(3, model);
+            ps.setString(4, year);
+            ps.setString(5, type);
+            ps.setString(6, vehicle_type);
+            ps.setString(7, costEstimate);
+            ps.execute();
+        }
+
+        catch (SQLException e) {
+            System.err.println("Error occurred " + e.getMessage());
+        }
+    }
+
+
+    public void addCar(String vin, String make, String model, String year, String type, String vehicle_type,
+                       String costEstimate, String numberOfDoors, String oilChangeCost) {
+        addVehicle(vin, make, model, year, type, vehicle_type, costEstimate);
+
+        String insertVehicle = "INSERT INTO car_details (vin, numberOfDoors, oilChangeCost) VALUES ? ? ?";
+        try (PreparedStatement ps = connection.prepareStatement("INSERT INTO car_details (vin, numberOfDoors, oilChangeCost) VALUES ? ? ?")) {
+            ps.setString(1, vin);
+            ps.setString(2, numberOfDoors);
+            ps.setString(3, oilChangeCost);
+            ps.execute();
+        }
+
+        catch (SQLException e) {
+            System.err.println("Error occurred " + e.getMessage());
+        }
+    }
+
+    public void addMotorcycle(String vin, String make, String model, String year, String type, String vehicle_type,
+                       String costEstimate, String chainCondition, String chainReplacementCost) {
+        addVehicle(vin, make, model, year, type, vehicle_type, costEstimate);
+
+        try (PreparedStatement ps = connection.prepareStatement("INSERT INTO motorcycle_details (vin, numberOfDoors, oilChangeCost) VALUES ? ? ?")) {
+            ps.setString(1, vin);
+            ps.setString(2, chainCondition);
+            ps.setString(3, chainReplacementCost);
+            ps.execute();
+        }
+
+        catch (SQLException e) {
+            System.err.println("Error occurred " + e.getMessage());
+        }
+    }
+
+    public void addTruck(String vin, String make, String model, String year, String type, String vehicle_type,
+                       String costEstimate, String maxLoad, String cargoInspectionCost) {
+            addVehicle(vin, make, model, year, type, vehicle_type, costEstimate);
+
+        try (PreparedStatement ps = connection.prepareStatement("INSERT INTO truck_details (vin, maxLoad, cargoInspectionCost) VALUES ? ? ?")){
+            ps.setString(1, vin);
+            ps.setString(2, maxLoad);
+            ps.setString(3, cargoInspectionCost);
+            ps.execute();
+        }
+        catch (SQLException e){
+            System.err.println("Error occurred " + e.getMessage());
+        }
+    }
+
 
     public void deleteVehicle(String vin, String type) {
         try (PreparedStatement ps = connection.prepareStatement("DELETE FROM vehicles WHERE vin = ?")) {

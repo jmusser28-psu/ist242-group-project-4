@@ -47,6 +47,36 @@ public class Vehicle {
         return costEstimate;
     }
 
+    public void setVin(String vin) {
+        this.vin = vin;
+    }
+
+    public void setMake(String make) {
+        this.make = make;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setVehicle_type(String vehicle_type) {
+        this.vehicle_type = vehicle_type;
+    }
+
+    public void setCostEstimate(String costEstimate) {
+        this.costEstimate = costEstimate;
+    }
+
+
+
     public void displayMaintenanceDetails() {
         System.out.println("Vehicle: " + vehicle_type + " " + model +
                 " | VIN: " + vin +

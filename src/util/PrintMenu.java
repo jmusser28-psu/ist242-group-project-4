@@ -21,9 +21,10 @@ public class PrintMenu {
             System.out.println("0.) Exit Program");
             System.out.println("1.) View vehicle list & summaries");
             System.out.println("2.) Update Vehicle");
-            System.out.println("3.) Remove Vehicle");
-            System.out.println("4.) Display Average Maintenance Cost");
-            System.out.print("What would you like to do (0-4): ");
+            System.out.println("3.) Add Vehicle");
+            System.out.println("4.) Remove Vehicle");
+            System.out.println("5.) Display Average Maintenance Cost");
+            System.out.print("What would you like to do (0-5): ");
             userChoice = validate.validateByte();
 
             if (userChoice == 0) {
@@ -36,9 +37,12 @@ public class PrintMenu {
 
             }
             else if (userChoice == 3) {
-                vm.deleteVehicle();
+                vm.addVehicle();
             }
             else if (userChoice == 4) {
+                vm.deleteVehicle();
+            }
+            else if (userChoice == 5) {
                 boolean runMaintenance = true;
                 while(runMaintenance) {
                     System.out.println("Average Maintenance Cost");

@@ -19,5 +19,4 @@ public class Truck extends Vehicle {
                 " | Maintenance: $" + super.getCostEstimate() +
                 " | Cargo Inspection Cost: " + (cargoInspectionCost));
     }
-
 }
