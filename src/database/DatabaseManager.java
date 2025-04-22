@@ -258,6 +258,7 @@ public class DatabaseManager {
             ps.setString(5,vehicle_type);
             ps.setString(6,costEstimate);
             ps.setString(7,vin);
+            ps.execute();
         }
 
         catch (SQLException e) {
