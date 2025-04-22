@@ -248,6 +248,23 @@ public class DatabaseManager {
         }
     }
 
+    public void updateVehicle(String vin, String make, String model, String year, String type, String vehicle_type, String costEstimate) {
+        try(PreparedStatement ps = connection.prepareStatement("UPDATE VEHICLES SET make = ?, model = ?, year = ?, type = ?, vehicle_type = ?, costEstimate = ?" +
+                " WHERE vin = ?")) {
+            ps.setString(1, make);
+            ps.setString(2,model);
+            ps.setString(3,year);
+            ps.setString(4,type);
+            ps.setString(5,vehicle_type);
+            ps.setString(6,costEstimate);
+            ps.setString(7,vin);
+        }
+
+        catch (SQLException e) {
+            System.err.println("Error occurred: " + e.getMessage());
+        }
+    }
+
     public void closeConnection() {
         try {
             connection.close();

@@ -241,6 +241,14 @@ public class VehicleManager {
                         System.out.print("Please enter a new make: ");
                         String newMake = valide.line();
                         cars.get(i).setMake(newMake);
+                        for (int j = 0; j < vehicles.size(); j++) {
+                            if (userVin.equalsIgnoreCase(vehicles.get(i).getVin())) {
+                                vehicles.get(i).setMake(newMake);
+                            }
+                        }
+                        dbmanager.updateVehicle(vehicles.get(i).getVin(), vehicles.get(i).getMake(), vehicles.get(i).getModel(),
+                                vehicles.get(i).getYear(), vehicles.get(i).getType(), vehicles.get(i).getVehicleType(),
+                                vehicles.get(i).getCostEstimate());
                     }
                     else if (userChoice == 2) {
                         System.out.print("Please enter a new model: ");
