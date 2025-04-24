@@ -6,6 +6,11 @@ import util.InputValidation;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+/**
+ * VehicleManager is responsible for going through all of the vehicle related functions. It
+ * includes adding, updating and deleting the vehicles, while also being able to calculate
+ * the maintenance costs.
+ */
 public class VehicleManager {
     private final InputValidation valide = new InputValidation();
     private DatabaseManager dbmanager;
@@ -25,6 +30,9 @@ public class VehicleManager {
         trucks = dbmanager.getTrucks();
     }
 
+    /**
+     * Prints the maintenance details for all of the vehicles.
+     */
     public void printVehicleSummaries() {
         for (int i = 0; i < cars.size(); i++) {
             cars.get(i).displayMaintenanceDetails();
@@ -37,6 +45,10 @@ public class VehicleManager {
         }
     }
 
+    /**
+     * Adds a new vehicle, while also asking the user for the vehicle type and
+     * vehicle characteristics.
+     */
     public void addVehicle() {
         System.out.print("Please enter a vehicle id: ");
         String vin = valide.line();
@@ -135,14 +147,19 @@ public class VehicleManager {
         }
     }
 
+
+    /**
+     * Deletes a vehicle based off of its VIN, Make, Model, amd Year
+     */
     public void deleteVehicle() {
         for (int i = 0; i < vehicles.size(); i++) {
             String vin = vehicles.get(i).getVin();
             String make = vehicles.get(i).getMake();
             String model = vehicles.get(i).getModel();
             String year = vehicles.get(i).getYear();
+            String type = vehicles.get(i).getType();
 
-            System.out.printf("%d: Vin: %s, Make: %s, Model: %s, Year: %s\n", (i + 1), vin, make, model, year);
+            System.out.printf("%d: Vin: %s, Make: %s, Model: %s, Year: %s, Type: %s\n", (i + 1), vin, make, model, year, type);
         }
 
         System.out.print("Please enter a desired VIN #: ");
@@ -199,21 +216,33 @@ public class VehicleManager {
      * Prompts the user to update the field and returns the updated information.
      * @return
      */
-    public String[] updateVehicle() {
+    public String[] updateVehicle(String type) {
         String vin = "";
         String make = "";
         String model = "";
         String year = "";
-        String type = "";
         String vehicleType = "";
         String costEstimate = "";
 
+        if (type.equalsIgnoreCase("Car")) {
+            for (int i = 0; i < cars.size(); i++) {
+                System.out.printf("VIN: %s, Make: %s, Type: %s\n", cars.get(i).getVin(),
+                        cars.get(i).getMake(), cars.get(i).getType());
+            }
+        }
 
-        System.out.println("Vehicle Information:");
-        for (int i = 0; i < vehicles.size(); i++) {
-            System.out.printf("VIN: %s, Make: %s, Type: %s\n", vehicles.get(i).getVin(),
-                    vehicles.get(i).getMake(), vehicles.get(i).getType()
-            );
+        if (type.equalsIgnoreCase("Motorcycle")) {
+            for (int i = 0; i < motorcycles.size(); i++) {
+                System.out.printf("VIN: %s, Make: %s, Type: %s\n", motorcycles.get(i).getVin(),
+                        motorcycles.get(i).getMake(), motorcycles.get(i).getType());
+            }
+        }
+
+        if (type.equalsIgnoreCase("Truck")) {
+            for (int i = 0; i < trucks.size(); i++) {
+                System.out.printf("VIN: %s, Make: %s, Type: %s\n", trucks.get(i).getVin(),
+                        trucks.get(i).getMake(), trucks.get(i).getType());
+            }
         }
 
         System.out.print("Please enter the VIN of the vehicle you would like to modify: ");
@@ -231,64 +260,62 @@ public class VehicleManager {
             }
         }
 
+        dbmanager.deleteVehicle(vin, type);
+
+        // Updates most information of a vehicle, however assumes the type and VIN will be constant.
         boolean loopDone = false;
         byte choice = 0;
         while (!loopDone) {
             System.out.println("Modify Vehicle Information");
             System.out.println("0.) Exit");
-            System.out.println("1.) Vin");
-            System.out.println("2.) Make");
-            System.out.println("3.) Model");
-            System.out.println("4.) Year");
-            System.out.println("5.) Type");
-            System.out.println("6.) Vehicle Brand Type");
-            System.out.println("7.) Cost Estimate");
-            System.out.println("What would you like to modify (numerical value): ");
+            System.out.println("1.) Make");
+            System.out.println("2.) Model");
+            System.out.println("3.) Year");
+            System.out.println("4.) Vehicle Brand Type");
+            System.out.println("5.) Cost Estimate");
+            System.out.print("What would you like to modify (0-5): ");
             choice = valide.validateByte();
 
             if (choice == 0) {
                 loopDone = true;
             }
             else if (choice == 1) {
-                vin = valide.line();
-            }
-            else if (choice == 2) {
+                System.out.print("Please enter a new make: ");
                 make = valide.line();
             }
-            else if (choice == 3) {
+            else if (choice == 2) {
+                System.out.print("Please enter a new model: ");
                 model = valide.line();
             }
-            else if (choice == 4) {
+            else if (choice == 3) {
+                System.out.print("Please enter a new year: ");
                 year = valide.line();
             }
-            else if (choice == 5) {
-                type = valide.line();
-            }
-            else if (choice == 6) {
+            else if (choice == 4) {
+                System.out.print("Please enter a new brand type: ");
                 vehicleType = valide.line();
             }
-            else if (choice == 7) {
+            else if (choice == 5) {
+                System.out.print("Please enter a new cost estimate: ");
                 costEstimate = valide.line();
             }
         }
 
-        dbmanager.deleteVehicle(vin, type);
-        dbmanager.addVehicle(vin, make, model, year, type, vehicleType, costEstimate);
-
-        String[] info = {vin, make, model, year, type, vehicleType, costEstimate};
+        String[] info = {vin, make, model, year, vehicleType, costEstimate};
 
         return info;
     }
 
     public void updateCar() {
-        String[] info = updateVehicle();
+        String type = "Car";
+        String[] info = updateVehicle(type);
+
         String vin = info[0];
         String make = info[1];
         String model = info[2];
         String year = info[3];
-        String type = info[4];
-        String vehicleType = info[5];
-        String costEstimate = info[6];
+        String vehicleType = info[4];
+        String costEstimate = info[5];
 
         boolean loopDone = false;
         byte choice = 0;
@@ -308,36 +335,40 @@ public class VehicleManager {
             System.out.println("0.) Exit");
             System.out.println("1.) Number of Doors");
             System.out.println("2.) Oil Change Cost");
+            System.out.print("What would you like to modify (0-2): ");
             choice = valide.validateByte();
 
             if (choice == 0) {
                 loopDone = true;
             }
             else if (choice == 1) {
+                System.out.print("Please enter a new number of doors: ");
                 numberOfDoors = valide.line();
             }
             else if (choice == 2) {
+                System.out.print("Please enter a new oil change cost: ");
                 oilChangeCost = valide.line();
             }
             else {
                 System.out.printf("Invalid input %d", choice);
             }
 
-            dbmanager.addCar(vin, make, model, year, type, vehicleType, costEstimate, numberOfDoors, oilChangeCost);
-
         }
+
+        dbmanager.addCar(vin, make, model, year, type, vehicleType, costEstimate, numberOfDoors, oilChangeCost);
 
     }
 
     public void updateMotorcycle() {
-        String[] info = updateVehicle();
+        String type = "Motorcycle";
+        String[] info = updateVehicle(type);
+
         String vin = info[0];
         String make = info[1];
         String model = info[2];
         String year = info[3];
-        String type = info[4];
-        String vehicleType = info[5];
-        String costEstimate = info[6];
+        String vehicleType = info[4];
+        String costEstimate = info[5];
 
         boolean loopDone = false;
         byte choice = 0;
@@ -357,6 +388,7 @@ public class VehicleManager {
             System.out.println("0.) Exit");
             System.out.println("1.) Chain Condition");
             System.out.println("2.) Chain Replacement Cost");
+            System.out.print("What would you like to modify (0-3): ");
             choice = valide.validateByte();
 
             if (choice == 0) {
@@ -398,27 +430,29 @@ public class VehicleManager {
                 }
             }
             else if (choice == 2) {
+                System.out.print("Please enter a new chain replacement cost: ");
                 chainReplacementCost = valide.line();
             }
             else {
                 System.out.printf("Invalid input %d", choice);
             }
 
-            dbmanager.addMotorcycle(vin, make, model, year, type, vehicleType, costEstimate, chainCondition, chainReplacementCost);
-
         }
+
+        dbmanager.addMotorcycle(vin, make, model, year, type, vehicleType, costEstimate, chainCondition, chainReplacementCost);
 
     }
 
     public void updateTruck() {
-        String[] info = updateVehicle();
+        String type = "Truck";
+        String[] info = updateVehicle(type);
+
         String vin = info[0];
         String make = info[1];
         String model = info[2];
         String year = info[3];
-        String type = info[4];
-        String vehicleType = info[5];
-        String costEstimate = info[6];
+        String vehicleType = info[4];
+        String costEstimate = info[5];
 
         boolean loopDone = false;
         byte choice = 0;
@@ -438,24 +472,27 @@ public class VehicleManager {
             System.out.println("0.) Exit");
             System.out.println("1.) Max Load");
             System.out.println("2.) Cargo Inspection Cost");
+            System.out.print("What would you like to modify (0-3): ");
             choice = valide.validateByte();
 
             if (choice == 0) {
                 loopDone = true;
             }
             else if (choice == 1) {
+                System.out.print("Please enter a new max load capacity: ");
                 maxLoad = valide.line();
             }
             else if (choice == 2) {
+                System.out.print("Please enter a new cargo inspection cost: ");
                 cargoInspectionCost = valide.line();
             }
             else {
                 System.out.printf("Invalid input %d", choice);
             }
 
-            dbmanager.addTruck(vin, make, model, year, type, vehicleType, costEstimate, maxLoad, cargoInspectionCost);
-
         }
+
+        dbmanager.addTruck(vin, make, model, year, type, vehicleType, costEstimate, maxLoad, cargoInspectionCost);
 
     }
 
