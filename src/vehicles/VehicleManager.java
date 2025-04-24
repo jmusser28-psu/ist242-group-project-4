@@ -245,8 +245,45 @@ public class VehicleManager {
             }
         }
 
-        System.out.print("Please enter the VIN of the vehicle you would like to modify: ");
-        String userVin = valide.line();
+        boolean typeValid = false;
+        String userVin = "";
+
+        while (!typeValid) {
+            System.out.printf("Please enter the VIN of the %s you would like to modify: ", type);
+            userVin = valide.line();
+
+            if (type.equalsIgnoreCase("Car")) {
+                for (Car car : cars) {
+                    if (car.getVin().equalsIgnoreCase(userVin)) {
+                        typeValid = true;
+                    }
+                }
+            }
+
+            if (type.equalsIgnoreCase("Motorcycle")) {
+                for (Motorcycle motorcycle : motorcycles) {
+                    if (motorcycle.getVin().equalsIgnoreCase(userVin)) {
+                        typeValid = true;
+                    }
+                }
+            }
+
+            if (type.equalsIgnoreCase("Truck")) {
+                for (Truck truck : trucks) {
+                    if (truck.getVin().equalsIgnoreCase(userVin)) {
+                        typeValid = true;
+                    }
+                }
+            }
+
+            if (!typeValid) {
+                System.out.printf("Please enter a valid %s VIN\n", type);
+            }
+
+        }
+
+
+
 
         for (int i = 0; i < vehicles.size(); i++) {
             if (vehicles.get(i).getVin().equalsIgnoreCase(userVin)) {

@@ -39,6 +39,7 @@ public class PrintMenu {
             //Handle user choices
 
             if (userChoice == 0) {
+                System.out.println("Exiting...");
                 run = false; // Exit program
             }
             else if (userChoice == 1) {
