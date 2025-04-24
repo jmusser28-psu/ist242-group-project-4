@@ -34,7 +34,7 @@ public class PrintMenu {
                 vm.printVehicleSummaries();
             }
             else if (userChoice == 2) {
-                vm.updateVehicle();
+                //vm.updateVehicle();
             }
             else if (userChoice == 3) {
                 vm.addVehicle();

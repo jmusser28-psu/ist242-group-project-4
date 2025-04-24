@@ -166,7 +166,7 @@ public class DatabaseManager {
 
     public void addVehicle(String vin, String make, String model, String year, String type, String vehicle_type, String costEstimate) {
         try (PreparedStatement ps = connection.prepareStatement("INSERT INTO vehicles (vin, make, model, " +
-                "year, type, vehicle_type, costEstimate) VALUES ? ? ? ? ? ? ?")) {
+                "year, type, vehicle_type, costEstimate) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
             ps.setString(1, vin);
             ps.setString(2, make);
             ps.setString(3, model);
@@ -174,7 +174,7 @@ public class DatabaseManager {
             ps.setString(5, type);
             ps.setString(6, vehicle_type);
             ps.setString(7, costEstimate);
-            ps.execute();
+            ps.executeUpdate();
         }
 
         catch (SQLException e) {
@@ -186,17 +186,15 @@ public class DatabaseManager {
     public void addCar(String vin, String make, String model, String year, String type, String vehicle_type,
                        String costEstimate, String numberOfDoors, String oilChangeCost) {
         addVehicle(vin, make, model, year, type, vehicle_type, costEstimate);
-
-        String insertVehicle = "INSERT INTO car_details (vin, numberOfDoors, oilChangeCost) VALUES ? ? ?";
-        try (PreparedStatement ps = connection.prepareStatement("INSERT INTO car_details (vin, numberOfDoors, oilChangeCost) VALUES ? ? ?")) {
+        try (PreparedStatement ps = connection.prepareStatement("INSERT INTO car_details (vin, numberOfDoors, oilChangeCost) " +
+                "VALUES (?, ?, ?)")) {
             ps.setString(1, vin);
             ps.setString(2, numberOfDoors);
             ps.setString(3, oilChangeCost);
-            ps.execute();
+            ps.executeUpdate();
         }
-
-        catch (SQLException e) {
-            System.err.println("Error occurred " + e.getMessage());
+        catch (SQLException exception) {
+            System.err.println("Error occurred " + exception.getMessage());
         }
     }
 
@@ -243,24 +241,6 @@ public class DatabaseManager {
                 }
             }
         }
-        catch (SQLException e) {
-            System.err.println("Error occurred: " + e.getMessage());
-        }
-    }
-
-    public void updateVehicle(String vin, String make, String model, String year, String type, String vehicle_type, String costEstimate) {
-        try(PreparedStatement ps = connection.prepareStatement("UPDATE VEHICLES SET make = ?, model = ?, year = ?, type = ?, vehicle_type = ?, costEstimate = ?" +
-                " WHERE vin = ?")) {
-            ps.setString(1, make);
-            ps.setString(2,model);
-            ps.setString(3,year);
-            ps.setString(4,type);
-            ps.setString(5,vehicle_type);
-            ps.setString(6,costEstimate);
-            ps.setString(7,vin);
-            ps.execute();
-        }
-
         catch (SQLException e) {
             System.err.println("Error occurred: " + e.getMessage());
         }

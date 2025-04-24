@@ -82,6 +82,8 @@ public class VehicleManager {
             System.out.println("How expensive is it to change the car's oil? : $");
             String oilChangeCost = valide.line();
 
+            dbmanager.addCar(vin, make, model, year, type, vehicle_type, costEstimate, numberOfDoors, oilChangeCost);
+
         }
         if (type.equalsIgnoreCase("Motorcycle")) {
             System.out.println("What is the condition of your chain? ");
@@ -92,10 +94,11 @@ public class VehicleManager {
 
             boolean chainConditionRun = true;
             byte userChoice = 0;
+            String chainCondition = "";
+
             while (chainConditionRun) {
                 System.out.print("Please pick a choice (1-4): ");
                 userChoice = valide.validateByte();
-                String chainCondition = "";
 
                 if (userChoice == 1) {
                     chainCondition = "Poor";
@@ -167,127 +170,6 @@ public class VehicleManager {
             for (int i = 0; i < cars.size(); i++) {
                 if (cars.get(i).getVin().equalsIgnoreCase(userVin)) {
                     cars.remove(i);
-                }
-            }
-        }
-
-        if (type.equalsIgnoreCase("Motorcycle")) {
-            for (int i = 0; i < motorcycles.size(); i++) {
-                if (motorcycles.get(i).getVin().equalsIgnoreCase(userVin)) {
-                    motorcycles.remove(i);
-                }
-            }
-        }
-
-        if (type.equalsIgnoreCase("Truck")) {
-            for (int i = 0; i < trucks.size(); i++) {
-                if (trucks.get(i).getVin().equalsIgnoreCase(userVin)) {
-                    trucks.remove(i);
-                }
-            }
-        }
-
-        dbmanager.deleteVehicle(userVin, type);
-    }
-
-    public void updateVehicle() {
-        for (int i = 0; i < vehicles.size(); i++) {
-            String vin = vehicles.get(i).getVin();
-            String make = vehicles.get(i).getMake();
-            String model = vehicles.get(i).getModel();
-            String year = vehicles.get(i).getYear();
-
-            System.out.printf("%d: Vin: %s, Make: %s, Model: %s, Year: %s\n", (i + 1), vin, make, model, year);
-        }
-
-        System.out.print("Please enter a desired VIN #: ");
-        String userVin = valide.line();
-
-        boolean run = true;
-        String type = "";
-        while (run) {
-            System.out.print("Please enter the type of vehicle (Car/Truck/Motorcycle): ");
-            type = valide.line();
-            if (type.equalsIgnoreCase("Car")) {
-                run = false;
-            }
-            else if (type.equalsIgnoreCase("Motorcycle")) {
-                run = false;
-            }
-            else if (type.equalsIgnoreCase("Truck")) {
-                run = false;
-            }
-            else {
-                System.out.println("Please enter a valid vehicle type");
-            }
-        }
-
-        if (type.equalsIgnoreCase("Car")) {
-            byte userChoice = 0;
-            for (int i = 0; i < cars.size(); i++) {
-                if (cars.get(i).getVin().equalsIgnoreCase(userVin)) {
-                    System.out.println("What would you like to update?");
-                    System.out.println("1.) Make");
-                    System.out.println("2.) Model");
-                    System.out.println("3.) Year");
-                    System.out.println("4.) Vehicle Type");
-                    System.out.println("5.) Brand Type");
-                    System.out.println("6.) Cost Estimate");
-                    System.out.println("7.) Number of Doors");
-                    System.out.println("8.) Oil Change Cost");
-                    System.out.print("What would you like to do? (1-8): ");
-                    userChoice = valide.validateByte();
-                    if (userChoice == 1) {
-                        System.out.print("Please enter a new make: ");
-                        String newMake = valide.line();
-                        cars.get(i).setMake(newMake);
-                        for (int j = 0; j < vehicles.size(); j++) {
-                            if (userVin.equalsIgnoreCase(vehicles.get(i).getVin())) {
-                                vehicles.get(i).setMake(newMake);
-                            }
-                        }
-                        dbmanager.updateVehicle(vehicles.get(i).getVin(), vehicles.get(i).getMake(), vehicles.get(i).getModel(),
-                                vehicles.get(i).getYear(), vehicles.get(i).getType(), vehicles.get(i).getVehicleType(),
-                                vehicles.get(i).getCostEstimate());
-                    }
-                    else if (userChoice == 2) {
-                        System.out.print("Please enter a new model: ");
-                        String newModel = valide.line();
-                        cars.get(i).setModel(newModel);
-                    }
-                    else if (userChoice == 3) {
-                        System.out.print("Please enter a new year: ");
-                        String newYear = valide.line();
-                        cars.get(i).setYear(newYear);
-                    }
-                    else if (userChoice == 4) {
-                        System.out.print("Please enter a new vehicle type: ");
-                        String newType = valide.line();
-                        cars.get(i).setType(newType);
-                    }
-                    else if (userChoice == 5) {
-                        System.out.print("Please enter a new brand type: ");
-                        String newVehicleType = valide.line();
-                        cars.get(i).setVehicle_type(newVehicleType);
-                    }
-                    else if (userChoice == 6) {
-                        System.out.print("Please enter a new cost estimate: ");
-                        String newCostEstimate = valide.line();
-                        cars.get(i).setCostEstimate(newCostEstimate);
-                    }
-                    else if (userChoice == 7) {
-                        System.out.print("Please enter a new vin: ");
-                        String newVin = valide.line();
-                        cars.get(i).setVin(newVin);
-                    }
-                    else if (userChoice == 8) {
-                        System.out.print("Please enter a new vin: ");
-                        String newVin = valide.line();
-                        cars.get(i).setVin(newVin);
-                    }
-                    else {
-                        System.out.printf("Invalid choice %d\n", userChoice);
-                    }
                 }
             }
         }
