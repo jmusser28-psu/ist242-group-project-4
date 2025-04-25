@@ -22,6 +22,7 @@ public class PrintMenu {
         Connection connection = dbc.getConnection();
         VehicleManager vm = new VehicleManager(connection);
 
+        // Runs until the user chooses to exit
         boolean run = true;
         while (run) {
             // Display main menu options
@@ -39,10 +40,12 @@ public class PrintMenu {
             //Handle user choices
 
             if (userChoice == 0) {
+                // Exits the program
                 System.out.println("Exiting...");
                 run = false; // Exit program
             }
             else if (userChoice == 1) {
+                // Prints the summaries
                 vm.printVehicleSummaries();
             }
             else if (userChoice == 2) {
@@ -51,6 +54,7 @@ public class PrintMenu {
                 System.out.print("What would you like to update (Car/Motorcycle/Truck): ");
                 String typeToUpdate = "";
                 while (!valid) {
+                    // Loops until type is determined to be valid
                     typeToUpdate = validate.line();
                     if (typeToUpdate.equalsIgnoreCase("Car")) {
                         valid = true;
@@ -93,6 +97,7 @@ public class PrintMenu {
                 // Display average maintenance costs submenu
                 boolean runMaintenance = true;
                 while(runMaintenance) {
+                    // Runs until the user exits
                     System.out.println("Average Maintenance Cost");
                     System.out.println("0.) Return to main menu");
                     System.out.println("1.) View average for all vehicles");
@@ -103,27 +108,34 @@ public class PrintMenu {
                     userChoice = validate.validateByte();
 
                     if (userChoice == 0) {
+                        // Exits the submenu
                         runMaintenance = false;
                     }
                     else if (userChoice == 1) {
+                        // Gets the average cost on all vehicles
                         System.out.printf("$%.2f\n", vm.maintenanceAverageVehicle());
                     }
                     else if (userChoice == 2) {
+                        // Gets the average cost for car
                         System.out.printf("$%.2f\n", vm.maintenanceAverageCar());
                     }
                     else if (userChoice == 3) {
+                        // Gets the average cost for motorcycles
                         System.out.printf("$%.2f\n", vm.maintenanceAverageMotorcycle());
                     }
                     else if (userChoice == 4) {
+                        // Gets the average cost for trucks
                         System.out.printf("$%.2f\n", vm.maintenanceAverageTruck());
                     }
                     else {
+                        // Displays an invalid choice error
                         System.out.printf("Invalid choice %d\n", userChoice);
                     }
                 }
 
             }
             else {
+                // Displays an invalid choice error
                 System.out.printf("Invalid choice %d\n", userChoice);
             }
         }

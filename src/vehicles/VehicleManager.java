@@ -111,6 +111,7 @@ public class VehicleManager {
                 System.out.print("Please pick a choice (1-4): ");
                 userChoice = valide.validateByte();
 
+                // Allows the user to pick one of for pre-determined chain conditions
                 if (userChoice == 1) {
                     chainCondition = "Poor";
                     chainConditionRun = false;
@@ -213,7 +214,7 @@ public class VehicleManager {
 
 
     /**
-     * Prompts the user to update the field and returns the updated information.
+     * Prompts the user to update the field and returns the updated information to subclasses.
      * @return
      */
     public String[] updateVehicle(String type) {
@@ -224,6 +225,7 @@ public class VehicleManager {
         String vehicleType = "";
         String costEstimate = "";
 
+        // Determines what type the vehicle is and displays relevant VINs.
         if (type.equalsIgnoreCase("Car")) {
             for (int i = 0; i < cars.size(); i++) {
                 System.out.printf("VIN: %s, Make: %s, Type: %s\n", cars.get(i).getVin(),
@@ -248,6 +250,7 @@ public class VehicleManager {
         boolean typeValid = false;
         String userVin = "";
 
+        // Ensures that the user enters a valid VIN based on the vehicle type
         while (!typeValid) {
             System.out.printf("Please enter the VIN of the %s you would like to modify: ", type);
             userVin = valide.line();
@@ -279,12 +282,10 @@ public class VehicleManager {
             if (!typeValid) {
                 System.out.printf("Please enter a valid %s VIN\n", type);
             }
-
         }
 
-
-
-
+        // Gets the information from the vehicles array about the specific vehicle based on VIN
+        // It iterates through all vehicles and updates the variables on a match
         for (int i = 0; i < vehicles.size(); i++) {
             if (vehicles.get(i).getVin().equalsIgnoreCase(userVin)) {
                 vin = vehicles.get(i).getVin();
@@ -343,10 +344,15 @@ public class VehicleManager {
         return info;
     }
 
+    // Updates the car entry and vehicle entries by calling updateVehicle method
+    // Does so by removing the vehicle entry and thus the entry for the subclass and then re-adds it
+    // This way there are no SQL errors when attempting to update an entry
     public void updateCar() {
+        // Sets a vehicle type and then gets the info from the updateVehicle class
         String type = "Car";
         String[] info = updateVehicle(type);
 
+        // Sets the vehicle info to strings
         String vin = info[0];
         String make = info[1];
         String model = info[2];
@@ -360,6 +366,7 @@ public class VehicleManager {
         String numberOfDoors = "";
         String oilChangeCost = "";
 
+        // Adds vehicle type specific variables
         for (int i = 0; i < cars.size(); i++) {
             if (cars.get(i).getVin().equals(vin)) {
                 numberOfDoors = cars.get(i).getNumDoors();
@@ -367,6 +374,7 @@ public class VehicleManager {
             }
         }
 
+        // Allows the user to customize the vehicle specific variables until the user chooses to exit
         while (!loopDone) {
             System.out.println("Modify Car Information");
             System.out.println("0.) Exit");
@@ -392,10 +400,17 @@ public class VehicleManager {
 
         }
 
+        // Adds a new specific vehicle type and as consequence, a vehicle too.
+        // This method is mostly the same for the other two specific vehicle methods
+        // Those just have different vehicle specific variables
         dbmanager.addCar(vin, make, model, year, type, vehicleType, costEstimate, numberOfDoors, oilChangeCost);
 
     }
 
+
+    // Updates the car entry and vehicle entries by calling updateVehicle method
+    // Does so by removing the vehicle entry and thus the entry for the subclass and then re-adds it
+    // This way there are no SQL errors when attempting to update an entry
     public void updateMotorcycle() {
         String type = "Motorcycle";
         String[] info = updateVehicle(type);
@@ -480,6 +495,9 @@ public class VehicleManager {
 
     }
 
+    // Updates the car entry and vehicle entries by calling updateVehicle method
+    // Does so by removing the vehicle entry and thus the entry for the subclass and then re-adds it
+    // This way there are no SQL errors when attempting to update an entry
     public void updateTruck() {
         String type = "Truck";
         String[] info = updateVehicle(type);
@@ -533,6 +551,7 @@ public class VehicleManager {
 
     }
 
+    // Calculates the average maintenance for all vehicles
     public double maintenanceAverageVehicle() {
         double average = 0.0;
         for (Vehicle vehicle : vehicles) {
@@ -543,6 +562,7 @@ public class VehicleManager {
         return average;
     }
 
+    // Calculates the average maintenance for cars
     public double maintenanceAverageCar() {
         double average = 0.0;
         for (Car car : cars) {
@@ -553,6 +573,7 @@ public class VehicleManager {
         return average;
     }
 
+    // Calculates the average maintenance for motorcycles
     public double maintenanceAverageMotorcycle() {
         double average = 0.0;
         for (Motorcycle motorcycle : motorcycles) {
@@ -563,6 +584,7 @@ public class VehicleManager {
         return average;
     }
 
+    // Calculates the average maintenance for trucks
     public double maintenanceAverageTruck() {
         double average = 0.0;
         for (Truck truck : trucks) {

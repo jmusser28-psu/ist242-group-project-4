@@ -14,6 +14,7 @@ public class Motorcycle extends Vehicle {
         this.chainReplacementCost = chainReplacementCost;
     }
 
+    // Getters for chainConditions and chainReplacementCosts
     public String getChainCondition() {
         return chainCondition;
     }

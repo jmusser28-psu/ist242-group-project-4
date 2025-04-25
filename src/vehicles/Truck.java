@@ -15,6 +15,7 @@ public class Truck extends Vehicle {
         this.cargoInspectionCost = cargoInspectionCost;
     }
 
+    // Getters for maxLoad and cargoInspectionCost
     public String getMaxLoad() {
         return maxLoad;
     }
